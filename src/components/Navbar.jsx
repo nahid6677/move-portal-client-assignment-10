@@ -1,12 +1,43 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { Link, NavLink } from 'react-router-dom';
+import { AuthContext } from './authprovider/AuthProvider';
+import Swal from 'sweetalert2';
 
 const Navbar = () => {
+    const { user, logOut } = useContext(AuthContext);
     const links = <>
-    <li className={'bg-white text-red-400'}><NavLink to={"/"}>Home</NavLink></li>
-    <li><NavLink to={"/"}>Home 2</NavLink></li>
-    <li><NavLink to={"/"}>Home 3</NavLink></li>
+        <li><NavLink to={"/"}>Home</NavLink></li>
+        <li><NavLink to={"/"}>All Movies</NavLink></li>
+        <li><NavLink to={"/addmovie"}>Add Movie</NavLink></li>
+        <li><NavLink to={"/"}>My Favorites </NavLink></li>
     </>
+    const handleLogOut = () => {
+
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Now log out your account!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Log Out!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // console.log(result)
+                logOut()
+                    .then(() => {
+                        Swal.fire({
+                            title: "Yes!",
+                            text: "Log out successfull.",
+                            icon: "success"
+                        });
+                    })
+                    .catch(err => { console.log(err) })
+
+
+            }
+        });
+    }
     return (
         <div className="navbar bg-base-100">
             <div className="navbar-start">
@@ -33,7 +64,7 @@ const Navbar = () => {
                         }
                     </ul>
                 </div>
-                {/* <a className="btn btn-ghost text-xl">daisyUI</a> */}
+                <Link to={"/"}><a className=" text-xl"><img src={`https://cdn.bongo-solutions.com/icons/bongo-circle-logo.svg`} alt="" /></a></Link>
             </div>
             <div className="navbar-center hidden md:flex">
                 <ul className="menu gap-3 menu-horizontal px-1">
@@ -43,7 +74,9 @@ const Navbar = () => {
                 </ul>
             </div>
             <div className="navbar-end">
-                <a className="btn bg-slate-50">P</a>
+                {
+                    user ? <div className="flex items-center gap-1"><button onClick={handleLogOut} className='btn'>Log Out</button> {user?.photoURL && <div className="relative group "><img className={`w-10 rounded-full h-10 object-cover`} src={user?.photoURL} alt="" /> <p className=' absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white text-lg font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300'>{user?.displayName}</p></div>}</div> : <div className="flex gap-1"><Link to={"/signup"}><a className="btn ">Register</a></Link> <Link to={"/login"}><a className="btn ">Log In</a></Link></div>
+                }
             </div>
         </div>
     );
