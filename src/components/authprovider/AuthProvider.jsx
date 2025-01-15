@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateProfile } from 'firebase/auth';
+import { createUserWithEmailAndPassword, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, updateProfile } from 'firebase/auth';
 import React, { createContext, useEffect, useState } from 'react';
 import { auth } from '../forebase/firebase.init';
 
@@ -23,6 +23,10 @@ const AuthProvider = ({ children }) => {
     const updateUserProfile = (info) =>{
         setLoading(true);
         return updateProfile(auth.currentUser, info);
+    };
+    const forgotEmail = (email) =>{
+        setLoading(true)
+        return sendPasswordResetEmail(auth, email);
     }
 
     useEffect(()=>{
@@ -43,7 +47,8 @@ const AuthProvider = ({ children }) => {
         signIn,
         user,
         logOut,
-        updateUserProfile
+        updateUserProfile,
+        forgotEmail
     }
 
     return (

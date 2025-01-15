@@ -45,7 +45,7 @@ const Login = () => {
                     </label>
                     <input type={hide? 'text': 'password'} name='password' placeholder="password" className="input input-bordered" required />
                     <label className="label">
-                        <Link to={'/forgat'}><a href="#" className="label-text-alt link link-hover">Forgot password?</a></Link>
+                        <Link to={'/forgat'}><a className="label-text-alt link link-hover">Forgot password?</a></Link>
                     </label>
                     <button onClick={handleShow} type='button' className='absolute left-56 top-14'>{hide ? <FaRegEye className='pb-1'/> : <FaRegEyeSlash className='pb-1'/>}</button>
                 </div>

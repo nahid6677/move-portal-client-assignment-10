@@ -75,7 +75,12 @@ const Navbar = () => {
             </div>
             <div className="navbar-end">
                 {
-                    user ? <div className="flex items-center gap-1"><button onClick={handleLogOut} className='btn'>Log Out</button> {user?.photoURL && <div className="relative group "><img className={`w-10 rounded-full h-10 object-cover`} src={user?.photoURL} alt="" /> <p className=' absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white text-lg font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300'>{user?.displayName}</p></div>}</div> : <div className="flex gap-1"><Link to={"/signup"}><a className="btn ">Register</a></Link> <Link to={"/login"}><a className="btn ">Log In</a></Link></div>
+                    user ? <div className="flex items-center gap-1">
+                        {
+                            user?.photoURL.length > 15 ? <div className="relative group "><img className={`w-10 rounded-full h-10 object-cover`} src={user?.photoURL} alt="" /> <p className=' absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white text-lg font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300'>{user?.displayName}</p></div> : ''
+                        }
+                        <button onClick={handleLogOut} className='btn'>Log Out</button>
+                    </div> : <div className="flex gap-1"><Link to={"/signup"}><a className="btn ">Register</a></Link> <Link to={"/login"}><a className="btn ">Log In</a></Link></div>
                 }
             </div>
         </div>
