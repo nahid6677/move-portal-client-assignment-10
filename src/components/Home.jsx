@@ -3,7 +3,7 @@ import { AuthContext } from './authprovider/AuthProvider';
 
 const Home = () => {
     const {user} = useContext(AuthContext)
-    // console.log(user.photoURL.length)
+    // console.log(user?.user.uid)
     return (
         <div>
             <h2 className='text-2xl'>Home</h2>

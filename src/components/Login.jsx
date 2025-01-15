@@ -3,31 +3,61 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from './authprovider/AuthProvider';
 import { toast } from 'react-toastify';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
+import { GoogleAuthProvider } from 'firebase/auth';
+import { FcGoogle } from 'react-icons/fc';
 
 const Login = () => {
-    const {signIn} = useContext(AuthContext);
+    const { signIn, pupUpSignIn, setLoading, setError, error } = useContext(AuthContext);
+    const [passWrong, setpassWrong] = useState(false)
     const [hide, setHide] = useState(false)
     const location = useLocation()
-    const navigate = useNavigate()
-    const handleLogin = e =>{
+    const navigate = useNavigate();
+    // const provider = new GoogleAuthProvider();
+    const continueGoogle = () => {
+        pupUpSignIn()
+            .then(result => {
+                console.log(result.user)
+                if (result.user.uid) {
+                    setLoading(false)
+                    // console.log(result.user.uid)
+                }
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
+
+    const handleLogin = e => {
         e.preventDefault();
         const form = e.target;
         const email = form.email.value;
         const password = form.password.value;
+        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).+$/;
+        if (!passwordRegex.test(password)) {
+            toast.warning("Password must contain at least one letter and one number.");
+        } else {
+            // setError("");
+            signIn(email, password)
+                .then(result => {
+                    // console.log(result.user)
+                    if (result.user.uid) {
+                        setpassWrong(false)
+                        toast.success("Login Successfull")
+                        navigate(location?.state ? location.state : "/")
+                    }
+                })
+                .catch(err => {
+                    if(err){
+                        setpassWrong(true)
+                    }
+                })
+        }
         // console.log(email,password)
-        signIn(email,password)
-        .then(result =>{
-            // console.log(result.user)
-            if(result.user.uid) {
-                toast.success("Login Successfull")
-                navigate(location?.state ? location.state : "/")
-            }
-        })
-        .catch(err => console.log(err))
+
 
 
     }
-    const handleShow = () =>{
+    const handleShow = () => {
         setHide(!hide);
     }
     return (
@@ -42,18 +72,22 @@ const Login = () => {
                 <div className="form-control relative">
                     <label className="label">
                         <span className="label-text">Password</span>
+                        {
+                            passWrong && <span className="label-text text-red-500">Password is wrong !</span>
+                        }
                     </label>
-                    <input type={hide? 'text': 'password'} name='password' placeholder="password" className="input input-bordered" required />
+                    <input type={hide ? 'text' : 'password'} name='password' placeholder="password" className="input input-bordered" required />
                     <label className="label">
                         <Link to={'/forgat'}><a className="label-text-alt link link-hover">Forgot password?</a></Link>
                     </label>
-                    <button onClick={handleShow} type='button' className='absolute left-56 top-14'>{hide ? <FaRegEye className='pb-1'/> : <FaRegEyeSlash className='pb-1'/>}</button>
+                    <button onClick={handleShow} type='button' className='absolute left-56 top-14'>{hide ? <FaRegEye className='pb-1' /> : <FaRegEyeSlash className='pb-1' />}</button>
                 </div>
                 <div className="form-control mt-6">
                     <button className="btn btn-primary">Login</button>
                 </div>
             </form>
             <a>I don't have an account <Link className=' font-bold text-green-400' to={"/signup"}>Ragister</Link></a>
+            <button type='button' onClick={continueGoogle} className='btn mx-7 mt-3'><span className='flex items-center font-bold gap-2'><FcGoogle /> Continue with google</span></button>
         </div>
     );
 };

@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, updateProfile } from 'firebase/auth';
+import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, signInWithRedirect, signOut, updateProfile } from 'firebase/auth';
 import React, { createContext, useEffect, useState } from 'react';
 import { auth } from '../forebase/firebase.init';
 
@@ -7,7 +7,8 @@ export const AuthContext = createContext(null);
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(true);
-
+    const [error, setError] = useState("");
+    const provider = new GoogleAuthProvider();
     const signUpNew = (email, password) => {
         setLoading(true)
         return createUserWithEmailAndPassword(auth, email, password)
@@ -27,10 +28,15 @@ const AuthProvider = ({ children }) => {
     const forgotEmail = (email) =>{
         setLoading(true)
         return sendPasswordResetEmail(auth, email);
+    };
+    const pupUpSignIn = () =>{
+        setLoading(true)
+        // return signInWithRedirect(auth, provider)
+        return signInWithPopup(auth, provider);
     }
 
     useEffect(()=>{
-        const unSubscrive = onAuthStateChanged(auth, currentUser =>{
+        const unSubscrive = onAuthStateChanged(auth,currentUser =>{
             setUser(currentUser);
             setLoading(false);
         });
@@ -48,7 +54,10 @@ const AuthProvider = ({ children }) => {
         user,
         logOut,
         updateUserProfile,
-        forgotEmail
+        forgotEmail,
+        pupUpSignIn,
+        setError,
+        error
     }
 
     return (
