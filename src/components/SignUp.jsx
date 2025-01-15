@@ -1,11 +1,12 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from './authprovider/AuthProvider';
 import { toast } from 'react-toastify';
+import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 
 const SignUp = () => {
     const {signUpNew,updateUserProfile} = useContext(AuthContext)
-    // const location = useLocation();
+    const [hide, setHide] = useState(false)
     const navigate = useNavigate();
     const handleSignUp = e =>{
         e.preventDefault();
@@ -32,6 +33,9 @@ const SignUp = () => {
             console.log(err)
         })
     }
+    const handleShow = () =>{
+        setHide(!hide);
+    }
     return (
         <div className="card mx-auto mt-5 sm:mt-20 bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
             <form onSubmit={handleSignUp} className="card-body">
@@ -53,11 +57,12 @@ const SignUp = () => {
                     </label>
                     <input type="email" name='email' placeholder="email" className="input input-bordered" required />
                 </div>
-                <div className="form-control">
+                <div className="form-control relative">
                     <label className="label">
                         <span className="label-text">Password</span>
                     </label>
-                    <input type="password" name='password' placeholder="password" className="input input-bordered" required />
+                    <input type={hide? 'text': 'password'} name='password' placeholder="password" className="input input-bordered" required />
+                    <button onClick={handleShow} type='button' className='absolute left-56 top-14'>{hide ? <FaRegEye className='pb-1'/> : <FaRegEyeSlash className='pb-1'/>}</button>
                 </div>
                 <div className="form-control mt-6">
                     <button className="btn btn-primary">Ragister</button>

@@ -15,6 +15,7 @@ import SignUp from './components/SignUp.jsx';
 import Login from './components/Login.jsx';
 import { ToastContainer } from 'react-toastify';
 import PrivateRoute from './components/private-route/PrivateRoute.jsx';
+import Forget from './components/Forget.jsx';
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login></Login>
+      },
+      {
+        path: "/forgat",
+        element: <Forget></Forget>
       }
     ]
   },
