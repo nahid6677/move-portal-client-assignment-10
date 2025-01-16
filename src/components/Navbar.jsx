@@ -7,9 +7,9 @@ const Navbar = () => {
     const { user, logOut } = useContext(AuthContext);
     const links = <>
         <li><NavLink to={"/"}>Home</NavLink></li>
-        <li><NavLink to={"/"}>All Movies</NavLink></li>
+        <li><NavLink to={"/allmovies"}>All Movies</NavLink></li>
         <li><NavLink to={"/addmovie"}>Add Movie</NavLink></li>
-        <li><NavLink to={"/"}>My Favorites </NavLink></li>
+        <li><NavLink to={"/favorites"}>My Favorites </NavLink></li>
     </>
     const handleLogOut = () => {
 

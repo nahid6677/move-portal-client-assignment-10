@@ -19,6 +19,7 @@ const Login = () => {
                 console.log(result.user)
                 if (result.user.uid) {
                     setLoading(false)
+                    navigate(location?.state ? location.state : "/")
                     // console.log(result.user.uid)
                 }
             })
@@ -47,7 +48,7 @@ const Login = () => {
                     }
                 })
                 .catch(err => {
-                    if(err){
+                    if (err) {
                         setpassWrong(true)
                     }
                 })

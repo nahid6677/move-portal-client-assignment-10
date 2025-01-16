@@ -16,6 +16,7 @@ const SignUp = () => {
             .then(result => {
                 console.log(result.user)
                 if (result.user.uid) {
+                    navigate("/")
                     setLoading(false)
                     // console.log(result.user.uid)
                 }

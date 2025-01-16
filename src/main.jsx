@@ -16,7 +16,8 @@ import Login from './components/Login.jsx';
 import { ToastContainer } from 'react-toastify';
 import PrivateRoute from './components/private-route/PrivateRoute.jsx';
 import Forget from './components/Forget.jsx';
-import SignLoding from './components/SignLoding.jsx';
+import Error from './components/Error.jsx';
+// import SignLoding from './components/SignLoding.jsx';
 
 const router = createBrowserRouter([
   {
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
       {
         path: "/forgat",
         element: <Forget></Forget>
+      },
+      {
+        path: "*",
+        element: <Error></Error>
       }
     ]
   },

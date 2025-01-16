@@ -1,29 +1,66 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
+import { toast } from 'react-toastify';
+import { AuthContext } from './authprovider/AuthProvider';
 
 const AddMove = () => {
+    const { user } = useContext(AuthContext);
+    const [year, setYear] = useState("");
+    const [genre, setGenre] = useState('');
+    const genres = ['Comedy', 'Drama', 'Horror']
+    const years = [2024, 2023, 2022, 2021];
+    const isValidURL = (text) => {
+        try {
+            new URL(text);
+            return true;
+        } catch {
+            return false;
+        }
+    }
     const handleAddMovie = event => {
         event.preventDefault();
         const form = event.target;
         const poster = form.poster.value;
         const title = form.title.value;
-        const genre = form.genre.value;
         const duration = form.duration.value;
-        const release = form.release.value;
         const rating = form.rating.value;
         const summary = form.summary.value;
-        const movie = { poster, title, genre, duration, release, rating, summary };
-        // console.log(movie)
-        fetch(`http://localhost:5000/movies`,{
-            method: "POST",
-            headers: {
-                "content-type": "application/json"
-            },
-            body: JSON.stringify(movie)
-        })
-        .then(res => res.json())
-        .then(data => {
-            console.log(data)
-        })
+        const email = user.email;
+        const movie = { poster, title, genre, duration, year, rating, summary, email };
+        if (!isValidURL(poster)) {
+            toast.warning("Provide a photo URL of movie poster");
+
+        }
+        else if (title.length < 2) {
+            toast.warning("Movie title al least 2 characters")
+        }
+        else if (parseInt(duration) < 60) {
+            toast.warning("Movie time duration al least 60 min")
+        }
+        else if (genre.length < 2) {
+            toast.warning("Select a genre")
+        }
+        else if (year.length < 2) {
+            toast.warning("Select the movies year")
+
+        }
+        else if (summary.length < 10) {
+            toast.warning("Provide a summary at least 10 characters")
+        } else {
+            fetch(`http://localhost:5000/movies`, {
+                method: "POST",
+                headers: {
+                    "content-type": "application/json"
+                },
+                body: JSON.stringify(movie)
+            })
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data)
+                    toast.success("Movie added successfull")
+                })
+
+        }
+
     }
     return (
         <div className="max-w-[520px] mx-auto">
@@ -32,22 +69,27 @@ const AddMove = () => {
                     <div className="space-y-2">
                         <div className="form-control">
                             <label className="label">
-                                <span className="label-text">Movie Poster</span>
+                                <span className="label-text">Movie Poster ( photo url )</span>
                             </label>
                             <input type="text" name='poster' placeholder="Enter Photo URL" className="input input-bordered " required />
                         </div>
                         <div className="form-control">
                             <label className="label">
-                                <span className="label-text">Duration Time</span>
+                                <span className="label-text">Duration Time (min)</span>
                             </label>
                             <input type="text" name='duration' placeholder="Enter Duration Time" className="input input-bordered" required />
                         </div>
 
                         <div className="form-control">
                             <label className="label">
-                                <span className="label-text">Genre </span>
+                                <span className="label-text">Genre</span>
                             </label>
-                            <input type="text" name='genre' placeholder="Enter Genre" className="input input-bordered" required />
+                            <select className='select select-bordered w-full' name="genre" value={genre} onChange={e => setGenre(e.target.value)} id="">
+                                <option value="" disabled>Select Genre</option>
+                                {
+                                    genres.map((gen, idx) => <option key={idx} value={gen}>{gen}</option>)
+                                }
+                            </select>
                         </div>
                     </div>
                     <div className="space-y-2">
@@ -62,7 +104,12 @@ const AddMove = () => {
                             <label className="label">
                                 <span className="label-text">Release Year</span>
                             </label>
-                            <input type="text" name='release' placeholder="Enter Release Year" className="input input-bordered" required />
+                            <select className='select select-bordered w-full' name="releaseYear" value={year} onChange={e => setYear(e.target.value)} id="">
+                                <option value={''} disabled>Select Year</option>
+                                {
+                                    years.map((yea, idx) => <option value={yea} key={idx}>{yea}</option>)
+                                }
+                            </select>
                         </div>
                         <div className="form-control">
                             <label className="label">
