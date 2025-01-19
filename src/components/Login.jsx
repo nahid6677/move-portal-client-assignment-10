@@ -81,14 +81,14 @@ const Login = () => {
                     <label className="label">
                         <Link to={'/forgat'}><a className="label-text-alt link link-hover">Forgot password?</a></Link>
                     </label>
-                    <button onClick={handleShow} type='button' className='absolute left-56 top-14'>{hide ? <FaRegEye className='pb-1' /> : <FaRegEyeSlash className='pb-1' />}</button>
+                    <button onClick={handleShow} type='button' className='absolute left-72 top-14'>{hide ? <FaRegEye className='pb-1' /> : <FaRegEyeSlash className='pb-1' />}</button>
                 </div>
                 <div className="form-control mt-6">
                     <button className="btn btn-primary">Login</button>
                 </div>
             </form>
-            <a>I don't have an account <Link className=' font-bold text-green-400' to={"/signup"}>Ragister</Link></a>
-            <button type='button' onClick={continueGoogle} className='btn mx-7 mt-3'><span className='flex items-center font-bold gap-2'><FcGoogle /> Continue with google</span></button>
+            <a className='text-center'>I don't have an account <Link className=' font-bold text-green-400' to={"/signup"}>Ragister</Link></a>
+            <button type='button' onClick={continueGoogle} className='btn my-6 mx-7'><span className='flex items-center font-bold gap-2'><FcGoogle /> Continue with google</span></button>
         </div>
     );
 };

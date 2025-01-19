@@ -56,7 +56,10 @@ const AddMove = () => {
                 .then(res => res.json())
                 .then(data => {
                     console.log(data)
-                    toast.success("Movie added successfull")
+                    form.reset();
+                    setGenre('');
+                    setYear('')
+                    toast.success(`Movie added successfull "${title}"`);
                 })
 
         }

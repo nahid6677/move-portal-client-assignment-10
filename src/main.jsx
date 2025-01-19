@@ -17,6 +17,8 @@ import { ToastContainer } from 'react-toastify';
 import PrivateRoute from './components/private-route/PrivateRoute.jsx';
 import Forget from './components/Forget.jsx';
 import Error from './components/Error.jsx';
+import FavoriteMovie from './components/FavoriteMovie.jsx';
+import SeeDetails from './components/SeeDetails.jsx';
 // import SignLoding from './components/SignLoding.jsx';
 
 const router = createBrowserRouter([
@@ -26,7 +28,8 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Home></Home>
+        element: <Home></Home>,
+        loader: () => fetch(`http://localhost:5000/movies`)
       },
       {
         path: "/addmovie",
@@ -47,6 +50,16 @@ const router = createBrowserRouter([
       {
         path: "*",
         element: <Error></Error>
+      },
+      {
+        path: "/favorites",
+        element:<PrivateRoute><FavoriteMovie></FavoriteMovie></PrivateRoute>,
+        // loader: () => fetch(`http://localhost:5000/favorite`)
+      },
+      {
+        path: "/seedetails/:id",
+        element: <PrivateRoute><SeeDetails></SeeDetails></PrivateRoute>,
+        loader: ({params}) => fetch(`http://localhost:5000/movies/${params.id}`)
       }
     ]
   },

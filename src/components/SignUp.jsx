@@ -16,7 +16,7 @@ const SignUp = () => {
             .then(result => {
                 console.log(result.user)
                 if (result.user.uid) {
-                    navigate("/")
+                    navigate(location?.state ? location.state : "/")
                     setLoading(false)
                     // console.log(result.user.uid)
                 }
@@ -44,7 +44,7 @@ const SignUp = () => {
                         toast.success("Ragister Successfully!")
                         updateUserProfile({ displayName: name, photoURL: photo })
                             .then(() => {
-                                navigate("/")
+                                navigate(location?.state ? location.state : "/")
                             })
                     }
                     console.log(result.user)
@@ -89,14 +89,14 @@ const SignUp = () => {
                         <span className="label-text">Password</span>
                     </label>
                     <input type={hide ? 'text' : 'password'} name='password' placeholder="password" className="input input-bordered" required />
-                    <button onClick={handleShow} type='button' className='absolute left-56 top-14'>{hide ? <FaRegEye className='pb-1' /> : <FaRegEyeSlash className='pb-1' />}</button>
+                    <button onClick={handleShow} type='button' className='absolute left-72 top-14'>{hide ? <FaRegEye className='pb-1' /> : <FaRegEyeSlash className='pb-1' />}</button>
                 </div>
                 <div className="form-control mt-6">
                     <button className="btn btn-primary">Ragister</button>
                 </div>
             </form>
-            <a>I have an account <Link className=' font-bold text-green-400' to={"/login"}>Login</Link></a>
-            <button type='button' onClick={continueGoogle} className='btn mx-7 mt-3'><span className='flex items-center font-bold gap-2'><FcGoogle /> Continue with google</span></button>
+            <a className='text-center'>I have an account <Link className=' font-bold text-green-400' to={"/login"}>Login</Link></a>
+            <button type='button' onClick={continueGoogle} className='btn mx-7 my-6'><span className='flex items-center font-bold gap-2'><FcGoogle /> Continue with google</span></button>
         </div>
         // <div className="card mx-auto mt-5 sm:mt-20 bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
         //     <form className="card-body">
