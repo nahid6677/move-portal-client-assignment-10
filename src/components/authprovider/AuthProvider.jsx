@@ -8,42 +8,50 @@ const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const [favoriteMovies, setFavoriteMovies] = useState([]);
     const provider = new GoogleAuthProvider();
     const signUpNew = (email, password) => {
         setLoading(true)
         return createUserWithEmailAndPassword(auth, email, password)
     }
-    const signIn = (email, password)=>{
+    const signIn = (email, password) => {
         setLoading(true)
-        return signInWithEmailAndPassword(auth, email,password);
+        return signInWithEmailAndPassword(auth, email, password);
     };
-    const logOut = () =>{
+    const logOut = () => {
         // setLoading(false);
         return signOut(auth)
     };
-    const updateUserProfile = (info) =>{
+    const updateUserProfile = (info) => {
         setLoading(true);
         return updateProfile(auth.currentUser, info);
     };
-    const forgotEmail = (email) =>{
+    const forgotEmail = (email) => {
         setLoading(true)
         return sendPasswordResetEmail(auth, email);
     };
-    const pupUpSignIn = () =>{
+    const pupUpSignIn = () => {
         setLoading(true)
         // return signInWithRedirect(auth, provider)
         return signInWithPopup(auth, provider);
     }
 
-    useEffect(()=>{
-        const unSubscrive = onAuthStateChanged(auth,currentUser =>{
+    useEffect(() => {
+        const unSubscrive = onAuthStateChanged(auth, currentUser => {
             setUser(currentUser);
             setLoading(false);
+            // if(currentUser.email){
+            //     fetch(`https://move-portal-server-assignment-10.vercel.app/favorite?email=${currentUser.email}`)
+            //     .then(res => res.json())
+            //     .then(data => {
+            //         console.log(data)
+            //     })
+            // }
         });
-        return () =>{
+        return () => {
             unSubscrive()
         }
-    },[])
+    }, [])
 
 
     const info = {
@@ -57,7 +65,9 @@ const AuthProvider = ({ children }) => {
         forgotEmail,
         pupUpSignIn,
         setError,
-        error
+        error,
+        favoriteMovies,
+        setFavoriteMovies
     }
 
     return (

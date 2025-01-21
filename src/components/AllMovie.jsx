@@ -1,22 +1,36 @@
-import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
-import { Link, useLoaderData } from "react-router-dom";
-import Slider from "./Slider";
+import React, { useContext, useEffect, useState } from 'react';
+import { AuthContext } from './authprovider/AuthProvider';
+import { Link, useLoaderData } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { IoSearch } from 'react-icons/io5';
+// import { Rating } from 'react-simple-star-rating';
 
-
-const Home = () => {
-    const loadedMovies = useLoaderData();
+const AllMovie = () => {
+    const { user } = useContext(AuthContext)
     const [hover, setHover] = useState(false)
-    const [Movies, setMovies] = useState(loadedMovies)
+    const [search, setSearch] = useState('')
+    const loadedMovies = useLoaderData();
+    const [movies, setMovies] = useState(loadedMovies);
+
+    useEffect(() => {
+        fetch(`https://move-portal-server-assignment-10.vercel.app/movies?searchParams=${search}`)
+            .then(res => res.json())
+            .then(data => {
+                setMovies(data)
+            })
+    }, [search])
     return (
-        <div className="w-full mx-auto ">
-            <div className="slider bg-base-100 w-full ">
-                <Slider Movies={Movies}></Slider>
+        <div className='w-10/12 mx-auto '>
+            <div className="flex justify-center my-5">
+                <div className="relative">
+                    <input type="text" placeholder='Search' onChange={(e) => setSearch(e.target.value)} className='input px-5 bg-slate-700 ' />
+                    <IoSearch className='absolute top-4 left-48' />
+                </div>
             </div>
-            <div className="w-10/12 mx-auto grid overflow-hidden gap-2 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
+            <div className="w-full grid overflow-hidden gap-2 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 ">
                 {
-                    Movies.map(movie => <div key={movie._id} className="card my-5 mx-auto card-compact bg-base-200 pt-5 sm:w-80 shadow-xl">
+                    movies.map(movie => <div key={movie._id} className="card my-5 mx-auto card-compact bg-base-200 pt-5 sm:w-80 shadow-xl">
                         <figure>
                             <img className='rounded-md h-48'
                                 src={movie.poster}
@@ -47,4 +61,5 @@ const Home = () => {
     );
 };
 
-export default Home;
+
+export default AllMovie;

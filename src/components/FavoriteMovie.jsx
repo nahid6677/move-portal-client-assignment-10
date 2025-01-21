@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link, useLoaderData } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
+import { AuthContext } from './authprovider/AuthProvider';
 
 const FavoriteMovie = () => {
-    // const allMovies = useLoaderData();
-    const [movies, setMovies] = useState([])
+    const {favoriteMovies, setFavoriteMovies, user} = useContext(AuthContext);
     useEffect(() => {
-        fetch("http://localhost:5000/favorite")
+        fetch(`https://move-portal-server-assignment-10.vercel.app/favorite?email=${user.email}`)
             .then(res => res.json())
             .then(data => {
-                setMovies(data)
+                // console.log(data)
+                setFavoriteMovies(data)
             })
     }, [])
     const handleDeleteFavList = (id) => {
@@ -24,14 +25,14 @@ const FavoriteMovie = () => {
             confirmButtonText: "Yes, delete it!"
         }).then((result) => {
             if (result.isConfirmed) {
-                fetch(`http://localhost:5000/favorite/${id}`, {
+                fetch(`https://move-portal-server-assignment-10.vercel.app/favorite/${id}`, {
                     method: "DELETE"
                 })
                     .then(res => res.json())
                     .then(data => {
                         // console.log(data)
                         if (data.deletedCount > 0) {
-                            setMovies(movies.filter(mov => mov._id !== id))
+                            setFavoriteMovies(favoriteMovies.filter(mov => mov._id !== id))
                             toast.success("Delete successfully from favorite list")
                         }
                     })
@@ -42,7 +43,7 @@ const FavoriteMovie = () => {
         <div className='w-10/12 mx-auto'>
             <div className="w-full grid overflow-hidden gap-2 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
                 {
-                    movies.map(movie => <div key={movie._id} className="card my-5 mx-auto card-compact bg-base-200 pt-5 sm:w-80 shadow-xl">
+                    favoriteMovies.map(movie => <div key={movie._id} className="card my-5 mx-auto card-compact bg-base-200 pt-5 sm:w-80 shadow-xl">
                         <figure>
                             <img className='rounded-md h-48'
                                 src={movie.poster}

@@ -24,8 +24,8 @@ const AddMove = () => {
         const duration = form.duration.value;
         const rating = form.rating.value;
         const summary = form.summary.value;
-        const email = user.email;
-        const movie = { poster, title, genre, duration, year, rating, summary, email };
+        // const email = user.email;
+        const movie = { poster, title, genre, duration, year, rating, summary };
         if (!isValidURL(poster)) {
             toast.warning("Provide a photo URL of movie poster");
 
@@ -46,7 +46,7 @@ const AddMove = () => {
         else if (summary.length < 10) {
             toast.warning("Provide a summary at least 10 characters")
         } else {
-            fetch(`http://localhost:5000/movies`, {
+            fetch(`https://move-portal-server-assignment-10.vercel.app/movies`, {
                 method: "POST",
                 headers: {
                     "content-type": "application/json"

@@ -19,6 +19,8 @@ import Forget from './components/Forget.jsx';
 import Error from './components/Error.jsx';
 import FavoriteMovie from './components/FavoriteMovie.jsx';
 import SeeDetails from './components/SeeDetails.jsx';
+import AllMovie from './components/AllMovie.jsx';
+import Slider from './components/Slider.jsx';
 // import SignLoding from './components/SignLoding.jsx';
 
 const router = createBrowserRouter([
@@ -29,7 +31,7 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home></Home>,
-        loader: () => fetch(`http://localhost:5000/movies`)
+        loader: () => fetch(`http://localhost:5000/homespecial`)
       },
       {
         path: "/addmovie",
@@ -54,12 +56,17 @@ const router = createBrowserRouter([
       {
         path: "/favorites",
         element:<PrivateRoute><FavoriteMovie></FavoriteMovie></PrivateRoute>,
-        // loader: () => fetch(`http://localhost:5000/favorite`)
+        // loader: () => fetch(`https://move-portal-server-assignment-10.vercel.app/favorite`)
       },
       {
         path: "/seedetails/:id",
         element: <PrivateRoute><SeeDetails></SeeDetails></PrivateRoute>,
-        loader: ({params}) => fetch(`http://localhost:5000/movies/${params.id}`)
+        loader: ({params}) => fetch(`https://move-portal-server-assignment-10.vercel.app/movies/${params.id}`)
+      },
+      {
+        path: "/allmovies",
+        element:<AllMovie></AllMovie>,
+        loader: () => fetch(`https://move-portal-server-assignment-10.vercel.app/movies`)
       }
     ]
   },
