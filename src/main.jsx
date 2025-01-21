@@ -31,7 +31,7 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home></Home>,
-        loader: () => fetch(`http://localhost:5000/homespecial`)
+        loader: () => fetch(`https://move-portal-server-assignment-10.vercel.app/homespecial`)
       },
       {
         path: "/addmovie",
