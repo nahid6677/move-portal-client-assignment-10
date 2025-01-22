@@ -70,18 +70,20 @@ const Login = () => {
                     </label>
                     <input type="email" name='email' placeholder="email" className="input input-bordered" required />
                 </div>
-                <div className="form-control relative">
+                <div className="form-control">
                     <label className="label">
                         <span className="label-text">Password</span>
                         {
                             passWrong && <span className="label-text text-red-500">Password is wrong !</span>
                         }
                     </label>
-                    <input type={hide ? 'text' : 'password'} name='password' placeholder="password" className="input input-bordered" required />
+                    <div className="relative w-full">
+                        <input type={hide ? 'text' : 'password'} name='password' placeholder="password" className="input w-full input-bordered" required />
+                        <button onClick={handleShow} type='button' className='absolute right-4 top-4'>{hide ? <FaRegEye className='pb-1' /> : <FaRegEyeSlash className='pb-1' />}</button>
+                    </div>
                     <label className="label">
                         <Link to={'/forgat'}><a className="label-text-alt link link-hover">Forgot password?</a></Link>
                     </label>
-                    <button onClick={handleShow} type='button' className='absolute left-72 top-14'>{hide ? <FaRegEye className='pb-1' /> : <FaRegEyeSlash className='pb-1' />}</button>
                 </div>
                 <div className="form-control mt-6">
                     <button className="btn btn-primary">Login</button>
